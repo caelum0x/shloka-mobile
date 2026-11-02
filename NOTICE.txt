@@ -1,0 +1,21 @@
+Text sources and licensing
+
+Sanskrit verse text: the Bhagavad Gita, from the Mahabharata. Ancient
+Sanskrit text, in the public domain.
+
+English translation: Annie Wood Besant's 1922 translation ("The Lord's
+Song"), 4th edition, sourced from Wikisource (Bhagavad-Gita_(Besant_4th)).
+Published 1922, in the public domain in the United States.
+
+Chapter titles use the traditional Sanskrit discourse names (ancient,
+public domain). Chapter context summaries (2-4 sentences each) were
+written originally for this app, not copied from any existing app or
+translator's commentary.
+
+All 701 verses and 18 chapter summaries are bundled with this app and
+read entirely from local storage on the device; there is no server and
+no account.
+
+"Shloka" is this app's own name. It is not affiliated with, and does not
+reuse branding, UI, or code from, any other Bhagavad Gita or scripture
+app.
