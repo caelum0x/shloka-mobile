@@ -19,7 +19,8 @@ import type { Verse } from "../lib/types";
 const { height: SCREEN_H } = Dimensions.get("window");
 
 export function FeedScreen({ startIndex }: { startIndex: number }) {
-  const { isLiked, toggleLike, notes, setNote, recordPosition } = useLibrary();
+  const { isLiked, toggleLike, notes, setNote, recordPosition, textScale, cycleTextScale } =
+    useLibrary();
   const [activeVerse, setActiveVerse] = useState<Verse | null>(null);
   const [detailVisible, setDetailVisible] = useState(false);
   const [cardVerse, setCardVerse] = useState<Verse | null>(null);
@@ -78,11 +79,13 @@ export function FeedScreen({ startIndex }: { startIndex: number }) {
             verse={item}
             liked={isLiked(item.id)}
             hasNote={Boolean(notes[item.id]?.trim())}
+            textScale={textScale}
             onOpenDetail={() => openDetail(item)}
             onLike={() => toggleLike(item.id)}
             onNote={() => openDetail(item)}
             onShare={() => shareVerse(item)}
             onCard={() => openCard(item)}
+            onCycleTextScale={cycleTextScale}
           />
         )}
         pagingEnabled
@@ -102,6 +105,7 @@ export function FeedScreen({ startIndex }: { startIndex: number }) {
         verse={activeVerse}
         note={activeVerse ? notes[activeVerse.id] ?? "" : ""}
         visible={detailVisible}
+        textScale={textScale}
         onClose={() => setDetailVisible(false)}
         onChangeNote={(text) => {
           if (activeVerse) setNote(activeVerse.id, text);

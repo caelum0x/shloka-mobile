@@ -10,21 +10,26 @@ import {
   loadLastIndex,
   loadLikes,
   loadNotes,
+  loadTextScale,
   saveLastIndex,
   saveLikes,
   saveNotes,
+  saveTextScale,
 } from "./storage";
+import { DEFAULT_TEXT_SCALE, nextTextScale } from "./textScale";
 
 interface LibraryState {
   ready: boolean;
   likes: Set<string>;
   notes: Record<string, string>;
   lastIndex: number;
+  textScale: number;
   toggleLike: (id: string) => void;
   isLiked: (id: string) => boolean;
   setNote: (id: string, text: string) => void;
   removeNote: (id: string) => void;
   recordPosition: (index: number) => void;
+  cycleTextScale: () => void;
 }
 
 const LibraryContext = createContext<LibraryState | null>(null);
@@ -34,18 +39,21 @@ export function LibraryProvider({ children }: { children: React.ReactNode }) {
   const [likes, setLikes] = useState<Set<string>>(new Set());
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [lastIndex, setLastIndex] = useState(0);
+  const [textScale, setTextScale] = useState(DEFAULT_TEXT_SCALE);
   const positionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     (async () => {
-      const [l, n, idx] = await Promise.all([
+      const [l, n, idx, scale] = await Promise.all([
         loadLikes(),
         loadNotes(),
         loadLastIndex(),
+        loadTextScale(),
       ]);
       setLikes(l);
       setNotes(n);
       setLastIndex(idx);
+      setTextScale(scale);
       setReady(true);
     })();
   }, []);
@@ -88,6 +96,14 @@ export function LibraryProvider({ children }: { children: React.ReactNode }) {
     }, 400);
   }, []);
 
+  const cycleTextScale = useCallback(() => {
+    setTextScale((prev) => {
+      const next = nextTextScale(prev);
+      saveTextScale(next);
+      return next;
+    });
+  }, []);
+
   return (
     <LibraryContext.Provider
       value={{
@@ -95,11 +111,13 @@ export function LibraryProvider({ children }: { children: React.ReactNode }) {
         likes,
         notes,
         lastIndex,
+        textScale,
         toggleLike,
         isLiked,
         setNote,
         removeNote,
         recordPosition,
+        cycleTextScale,
       }}
     >
       {children}

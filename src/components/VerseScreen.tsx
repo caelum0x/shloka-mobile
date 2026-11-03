@@ -10,22 +10,26 @@ interface VerseScreenProps {
   verse: Verse;
   liked: boolean;
   hasNote: boolean;
+  textScale: number;
   onOpenDetail: () => void;
   onLike: () => void;
   onNote: () => void;
   onShare: () => void;
   onCard: () => void;
+  onCycleTextScale: () => void;
 }
 
 export function VerseScreen({
   verse,
   liked,
   hasNote,
+  textScale,
   onOpenDetail,
   onLike,
   onNote,
   onShare,
   onCard,
+  onCycleTextScale,
 }: VerseScreenProps) {
   return (
     <View style={[styles.screen, { height: SCREEN_H }]}>
@@ -38,9 +42,22 @@ export function VerseScreen({
           <Text style={styles.tag}>
             {verse.chapterTitle.toUpperCase()} · {verse.chapter}.{verse.verse}
           </Text>
-          <Text style={styles.sanskrit}>{verse.sanskrit}</Text>
+          <Text
+            style={[
+              styles.sanskrit,
+              { fontSize: 26 * textScale, lineHeight: 40 * textScale },
+            ]}
+          >
+            {verse.sanskrit}
+          </Text>
           <View style={styles.divider} />
-          <Text style={styles.translation} numberOfLines={8}>
+          <Text
+            style={[
+              styles.translation,
+              { fontSize: 18 * textScale, lineHeight: 27 * textScale },
+            ]}
+            numberOfLines={8}
+          >
             {verse.translation}
           </Text>
         </ScrollView>
@@ -48,10 +65,12 @@ export function VerseScreen({
       <ActionRail
         liked={liked}
         hasNote={hasNote}
+        textScalePercent={Math.round(textScale * 100)}
         onLike={onLike}
         onNote={onNote}
         onShare={onShare}
         onCard={onCard}
+        onCycleTextScale={onCycleTextScale}
       />
     </View>
   );

@@ -19,6 +19,7 @@ interface DetailSheetProps {
   note: string;
   visible: boolean;
   focusNote?: boolean;
+  textScale: number;
   onClose: () => void;
   onChangeNote: (text: string) => void;
 }
@@ -28,6 +29,7 @@ export function DetailSheet({
   note,
   visible,
   focusNote,
+  textScale,
   onClose,
   onChangeNote,
 }: DetailSheetProps) {
@@ -72,10 +74,24 @@ export function DetailSheet({
               <Text style={styles.body}>{verse.chapterSummary}</Text>
 
               <Text style={styles.sectionLabel}>SANSKRIT</Text>
-              <Text style={styles.sanskrit}>{verse.sanskrit}</Text>
+              <Text
+                style={[
+                  styles.sanskrit,
+                  { fontSize: 18 * textScale, lineHeight: 28 * textScale },
+                ]}
+              >
+                {verse.sanskrit}
+              </Text>
 
               <Text style={styles.sectionLabel}>TRANSLATION</Text>
-              <Text style={styles.body}>{verse.translation}</Text>
+              <Text
+                style={[
+                  styles.body,
+                  { fontSize: 15 * textScale, lineHeight: 22 * textScale },
+                ]}
+              >
+                {verse.translation}
+              </Text>
 
               <Text style={styles.sectionLabel}>YOUR NOTE</Text>
               <TextInput

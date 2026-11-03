@@ -6,10 +6,12 @@ import { theme } from "../lib/theme";
 interface ActionRailProps {
   liked: boolean;
   hasNote: boolean;
+  textScalePercent: number;
   onLike: () => void;
   onNote: () => void;
   onShare: () => void;
   onCard: () => void;
+  onCycleTextScale: () => void;
 }
 
 function RailButton({
@@ -47,10 +49,12 @@ function RailButton({
 export function ActionRail({
   liked,
   hasNote,
+  textScalePercent,
   onLike,
   onNote,
   onShare,
   onCard,
+  onCycleTextScale,
 }: ActionRailProps) {
   return (
     <View style={styles.rail} pointerEvents="box-none">
@@ -68,6 +72,12 @@ export function ActionRail({
       />
       <RailButton name="image" onPress={onCard} label="Make a verse card" />
       <RailButton name="share" onPress={onShare} label="Share verse" />
+      <RailButton
+        name="type"
+        active={textScalePercent !== 100}
+        onPress={onCycleTextScale}
+        label={`Text size, ${textScalePercent} percent, tap to change`}
+      />
     </View>
   );
 }

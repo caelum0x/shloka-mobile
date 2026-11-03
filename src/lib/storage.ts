@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DEFAULT_TEXT_SCALE, nearestTextScale } from "./textScale";
 
 const KEYS = {
   likes: "shloka:likes",
   notes: "shloka:notes",
   lastIndex: "shloka:lastIndex",
   onboarded: "shloka:onboarded",
+  textScale: "shloka:textScale",
 };
 
 export async function loadLikes(): Promise<Set<string>> {
@@ -76,5 +78,23 @@ export async function saveOnboarded(): Promise<void> {
     await AsyncStorage.setItem(KEYS.onboarded, "1");
   } catch {
     // Non-critical.
+  }
+}
+
+export async function loadTextScale(): Promise<number> {
+  try {
+    const raw = await AsyncStorage.getItem(KEYS.textScale);
+    if (!raw) return DEFAULT_TEXT_SCALE;
+    return nearestTextScale(Number(raw));
+  } catch {
+    return DEFAULT_TEXT_SCALE;
+  }
+}
+
+export async function saveTextScale(scale: number): Promise<void> {
+  try {
+    await AsyncStorage.setItem(KEYS.textScale, String(scale));
+  } catch {
+    // Non-critical; falls back to default next launch.
   }
 }
